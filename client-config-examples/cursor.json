@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "figma-dev-bridge": {
+      "command": "npx",
+      "args": [
+        "figma-dev-bridge"
+      ],
+      "type": "stdio"
+    }
+  }
+}

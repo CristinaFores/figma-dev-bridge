@@ -1,0 +1,10 @@
+{
+  "//": "OpenCode config lives at ~/.config/opencode/opencode.jsonc. OpenCode uses 'type: local' and 'command' as an ARRAY (not command/args). Use the npx form once published to npm; while running from source, replace command with [\"node\", \"/absolute/path/to/figma-dev-bridge/dist/index.js\"].",
+  "mcp": {
+    "figma-dev-bridge": {
+      "type": "local",
+      "command": ["npx", "figma-dev-bridge"],
+      "enabled": true
+    }
+  }
+}
