@@ -1,0 +1,7 @@
+# Source files not needed by npm consumers
+figma-plugin/code.ts
+figma-plugin/tsconfig.json
+
+# Dev/test
+test/
+*.tgz
