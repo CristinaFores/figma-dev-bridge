@@ -64,7 +64,6 @@ Ready-to-copy snippets live in [`client-config-examples/`](client-config-example
   "mcpServers": {
     "figma-dev-bridge": {
       "command": "node",
-      "args": ["/absolute/path/to/figma-dev-bridge/dist/index.js"],
       "type": "stdio"
     }
   }
@@ -78,7 +77,6 @@ Ready-to-copy snippets live in [`client-config-examples/`](client-config-example
   "mcp": {
     "figma-dev-bridge": {
       "type": "local",
-      "command": ["node", "/absolute/path/to/figma-dev-bridge/dist/index.js"],
       "enabled": true
     }
   }
