@@ -1,0 +1,16 @@
+{
+  "name": "Figma Dev Bridge",
+  "id": "1651991638967929445",
+  "api": "1.0.0",
+  "main": "code.js",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "documentAccess": "dynamic-page",
+  "editorType": ["figma"],
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": ["http://localhost:3055"],
+    "devAllowedDomains": ["*"],
+    "reasoning": "Sends Figma selection data to a local MCP bridge server so AI agents can read design context."
+  }
+}
