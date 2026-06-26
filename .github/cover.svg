@@ -69,7 +69,7 @@
   <text x="651" y="351" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#5eead4" text-anchor="middle">get_node_from_url</text>
   <rect x="472" y="368" width="256" height="28" rx="8" fill="#09090b" stroke="#27272a" stroke-width="1"/>
   <circle cx="492" cy="382" r="4" fill="#22c55e"/>
-  <text x="504" y="387" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="11" fill="#52525b">:3055  ·  stdio  ·  15 tools</text>
+  <text x="504" y="387" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="11" fill="#52525b">:3055  ·  stdio  ·  20 tools</text>
   <line x1="804" y1="310" x2="932" y2="310" stroke="url(#connR)" stroke-width="1.5" stroke-dasharray="4 4"/>
   <polygon points="804,305 793,310 804,315" fill="#3b82f6" opacity="0.7"/>
   <text x="866" y="300" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="500" fill="#3f3f46" text-anchor="middle">stdio MCP</text>
@@ -85,7 +85,7 @@
   <rect x="464" y="496" width="96" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
   <text x="512" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#60a5fa" text-anchor="middle">Node ≥ 18</text>
   <rect x="572" y="496" width="120" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
-  <text x="632" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#a78bfa" text-anchor="middle">15 MCP tools</text>
+  <text x="632" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#a78bfa" text-anchor="middle">20 MCP tools</text>
   <rect x="704" y="496" width="96" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
   <text x="752" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#fb923c" text-anchor="middle">TypeScript</text>
   <text x="600" y="562" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" fill="#27272a" text-anchor="middle">github.com/CristinaFores/figma-dev-bridge</text>
