@@ -1,113 +1,92 @@
-<svg viewBox="0 0 1200 580" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="580" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#09090b"/>
-      <stop offset="100%" stop-color="#0c0c10"/>
-    </linearGradient>
-    <radialGradient id="glow1" cx="30%" cy="60%" r="50%">
-      <stop offset="0%" stop-color="#6d28d9" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glow2" cx="80%" cy="40%" r="40%">
-      <stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#fafafa"/>
-      <stop offset="60%" stop-color="#e4e4e7"/>
-      <stop offset="100%" stop-color="#a78bfa"/>
-    </linearGradient>
-    <linearGradient id="connL" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.6"/>
-    </linearGradient>
-    <linearGradient id="connR" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="cardTop" x1="0" y1="0" x2="0" y2="1" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#18181b"/>
-      <stop offset="100%" stop-color="#101014"/>
-    </linearGradient>
-    <linearGradient id="centerTop" x1="0" y1="0" x2="0" y2="1" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#1a1025"/>
-      <stop offset="100%" stop-color="#0f0d18"/>
-    </linearGradient>
-    <filter id="blur12" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="12"/>
-    </filter>
-    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="0.8" fill="#ffffff05"/>
-    </pattern>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="600" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#09090b"/><stop offset="100%" stop-color="#0c0c10"/></linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="60%" r="50%"><stop offset="0%" stop-color="#6d28d9" stop-opacity="0.18"/><stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="40%" r="40%"><stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.1"/><stop offset="100%" stop-color="#1d4ed8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#fafafa"/><stop offset="60%" stop-color="#e4e4e7"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
+    <linearGradient id="connL" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed" stop-opacity="0"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0.6"/></linearGradient>
+    <linearGradient id="connR" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/></linearGradient>
+    <linearGradient id="connApi" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0d9488" stop-opacity="0"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0.6"/></linearGradient>
+    <linearGradient id="cardTop" x1="0" y1="0" x2="0" y2="1" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#18181b"/><stop offset="100%" stop-color="#101014"/></linearGradient>
+    <linearGradient id="centerTop" x1="0" y1="0" x2="0" y2="1" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a1025"/><stop offset="100%" stop-color="#0f0d18"/></linearGradient>
+    <linearGradient id="apiCard" x1="0" y1="0" x2="0" y2="1" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0f1f1e"/><stop offset="100%" stop-color="#0a1514"/></linearGradient>
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.8" fill="#ffffff05"/></pattern>
   </defs>
-  <rect width="1200" height="580" fill="url(#bg)"/>
-  <rect width="1200" height="580" fill="url(#glow1)"/>
-  <rect width="1200" height="580" fill="url(#glow2)"/>
-  <rect width="1200" height="580" fill="url(#dots)"/>
-  <!-- Hero -->
-  <text x="600" y="80" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="52" font-weight="800" letter-spacing="-2" fill="url(#titleGrad)" text-anchor="middle">figma-dev-bridge</text>
-  <text x="600" y="116" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="16" font-weight="400" fill="#52525b" text-anchor="middle">Live Figma context for any AI agent via Model Context Protocol</text>
-  <!-- npx pill -->
-  <rect x="462" y="136" width="276" height="38" rx="9" fill="#18181b" stroke="#27272a" stroke-width="1.5"/>
-  <circle cx="484" cy="155" r="4" fill="#22c55e" opacity="0.9"/>
-  <text x="497" y="160" font-family="'JetBrains Mono','Fira Code','Cascadia Code',ui-monospace,monospace" font-size="14" letter-spacing="-0.3" fill="#71717a">npx </text>
-  <text x="531" y="160" font-family="'JetBrains Mono','Fira Code','Cascadia Code',ui-monospace,monospace" font-size="14" letter-spacing="-0.3" fill="#e4e4e7">figma-dev-bridge</text>
-  <!-- Figma card -->
-  <rect x="60" y="212" width="208" height="200" rx="12" fill="url(#cardTop)" stroke="#27272a" stroke-width="1"/>
-  <rect x="103" y="240" width="30" height="30" rx="15" fill="#f24e1e"/>
-  <rect x="135" y="240" width="30" height="30" rx="15" fill="#ff7262"/>
-  <rect x="103" y="272" width="30" height="30" rx="15" fill="#a259ff"/>
-  <circle cx="150" cy="287" r="15" fill="#1abcfe"/>
-  <rect x="103" y="304" width="30" height="30" rx="15" fill="#0acf83"/>
-  <text x="164" y="358" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="-0.5" fill="#fafafa" text-anchor="middle">Figma</text>
-  <text x="164" y="378" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12" font-weight="400" fill="#3f3f46" text-anchor="middle">desktop app</text>
-  <rect x="102" y="394" width="124" height="22" rx="5" fill="#09090b" stroke="#1c2a1f" stroke-width="1"/>
-  <circle cx="117" cy="405" r="4" fill="#22c55e"/>
-  <text x="128" y="409" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="11" font-weight="500" fill="#4ade80">Plugin active</text>
-  <!-- Connector L -->
-  <line x1="268" y1="312" x2="386" y2="312" stroke="url(#connL)" stroke-width="1.5" stroke-dasharray="4 4"/>
-  <polygon points="386,307 396,312 386,317" fill="#7c3aed" opacity="0.7"/>
-  <text x="326" y="300" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="500" fill="#3f3f46" text-anchor="middle">POST /update</text>
-  <text x="326" y="328" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="500" fill="#3f3f46" text-anchor="middle">GET /requests</text>
-  <!-- Bridge card -->
-  <rect x="396" y="192" width="408" height="220" rx="14" fill="url(#centerTop)" stroke="#3b1f6e" stroke-width="1.5"/>
-  <rect x="396" y="192" width="408" height="3" rx="2" fill="#7c3aed"/>
-  <text x="600" y="232" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="10" font-weight="600" letter-spacing="3.5" fill="#7c3aed" text-anchor="middle">MCP SERVER</text>
-  <text x="600" y="266" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="32" font-weight="800" letter-spacing="-1.5" fill="#fafafa" text-anchor="middle">figma-dev-bridge</text>
-  <line x1="420" y1="282" x2="780" y2="282" stroke="#27272a" stroke-width="1"/>
-  <rect x="412" y="292" width="168" height="22" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
-  <text x="496" y="307" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="10.5" fill="#818cf8" text-anchor="middle">get_current_selection</text>
-  <rect x="588" y="292" width="142" height="22" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
-  <text x="659" y="307" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="10.5" fill="#818cf8" text-anchor="middle">get_selected_colors</text>
-  <rect x="412" y="320" width="118" height="22" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
-  <text x="471" y="335" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="10.5" fill="#818cf8" text-anchor="middle">get_node_info</text>
-  <rect x="538" y="320" width="108" height="22" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
-  <text x="592" y="335" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="10.5" fill="#818cf8" text-anchor="middle">get_variables</text>
-  <rect x="654" y="320" width="150" height="22" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
-  <text x="729" y="335" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="10.5" fill="#818cf8" text-anchor="middle">scan_nodes_by_types</text>
-  <rect x="472" y="352" width="256" height="30" rx="8" fill="#09090b" stroke="#27272a" stroke-width="1"/>
-  <circle cx="492" cy="367" r="4.5" fill="#22c55e"/>
-  <text x="504" y="372" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="12" fill="#52525b">:3055  ·  stdio  ·  13 tools</text>
-  <!-- Connector R -->
-  <line x1="804" y1="312" x2="932" y2="312" stroke="url(#connR)" stroke-width="1.5" stroke-dasharray="4 4"/>
-  <polygon points="804,307 794,312 804,317" fill="#3b82f6" opacity="0.7"/>
+  <rect width="1200" height="600" fill="url(#bg)"/>
+  <rect width="1200" height="600" fill="url(#glow1)"/>
+  <rect width="1200" height="600" fill="url(#glow2)"/>
+  <rect width="1200" height="600" fill="url(#dots)"/>
+  <text x="600" y="72" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="48" font-weight="800" letter-spacing="-2" fill="url(#titleGrad)" text-anchor="middle">figma-dev-bridge</text>
+  <text x="600" y="106" font-family="-apple-system,BlinkMacSystemFont,'Inter','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="15" font-weight="400" fill="#52525b" text-anchor="middle">Live Figma context for any AI agent via Model Context Protocol</text>
+  <rect x="468" y="124" width="264" height="34" rx="8" fill="#18181b" stroke="#27272a" stroke-width="1.5"/>
+  <circle cx="488" cy="141" r="4" fill="#22c55e" opacity="0.9"/>
+  <text x="501" y="146" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="13" fill="#71717a">npx </text>
+  <text x="533" y="146" font-family="'JetBrains Mono','Fira Code',ui-monospace,monospace" font-size="13" fill="#e4e4e7">figma-dev-bridge</text>
+  <rect x="52" y="178" width="196" height="154" rx="12" fill="url(#cardTop)" stroke="#27272a" stroke-width="1"/>
+  <rect x="80" y="198" width="26" height="26" rx="13" fill="#f24e1e"/>
+  <rect x="108" y="198" width="26" height="26" rx="13" fill="#ff7262"/>
+  <rect x="80" y="226" width="26" height="26" rx="13" fill="#a259ff"/>
+  <circle cx="121" cy="239" r="13" fill="#1abcfe"/>
+  <rect x="80" y="254" width="26" height="26" rx="13" fill="#0acf83"/>
+  <text x="150" y="292" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="15" font-weight="700" letter-spacing="-0.4" fill="#fafafa" text-anchor="middle">Figma</text>
+  <text x="150" y="310" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="11" fill="#3f3f46" text-anchor="middle">desktop + plugin</text>
+  <rect x="88" y="320" width="124" height="18" rx="5" fill="#09090b" stroke="#1c2a1f" stroke-width="1"/>
+  <circle cx="101" cy="329" r="3.5" fill="#22c55e"/>
+  <text x="111" y="333" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="500" fill="#4ade80">Plugin active</text>
+  <rect x="52" y="346" width="196" height="118" rx="12" fill="url(#apiCard)" stroke="#0d4a45" stroke-width="1"/>
+  <rect x="52" y="346" width="196" height="3" rx="2" fill="#0d9488"/>
+  <text x="150" y="382" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="600" letter-spacing="2.5" fill="#0d9488" text-anchor="middle">REST API</text>
+  <text x="150" y="404" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="15" font-weight="700" letter-spacing="-0.4" fill="#fafafa" text-anchor="middle">figma.com</text>
+  <text x="150" y="422" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="11" fill="#3f3f46" text-anchor="middle">api.figma.com/v1</text>
+  <rect x="88" y="434" width="124" height="18" rx="5" fill="#09090b" stroke="#0d4a45" stroke-width="1"/>
+  <text x="150" y="447" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#5eead4" text-anchor="middle">FIGMA_ACCESS_TOKEN</text>
+  <line x1="248" y1="270" x2="386" y2="300" stroke="url(#connL)" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <polygon points="383,295 394,301 384,307" fill="#7c3aed" opacity="0.7"/>
+  <text x="305" y="272" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="9" font-weight="500" fill="#3f3f46" text-anchor="middle">HTTP :3055</text>
+  <line x1="248" y1="400" x2="386" y2="360" stroke="url(#connApi)" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <polygon points="383,354 394,361 383,367" fill="#0d9488" opacity="0.7"/>
+  <text x="305" y="408" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="9" font-weight="500" fill="#3f3f46" text-anchor="middle">fetch()</text>
+  <rect x="396" y="176" width="408" height="236" rx="14" fill="url(#centerTop)" stroke="#3b1f6e" stroke-width="1.5"/>
+  <rect x="396" y="176" width="408" height="3" rx="2" fill="#7c3aed"/>
+  <text x="600" y="216" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="600" letter-spacing="3.5" fill="#7c3aed" text-anchor="middle">MCP SERVER</text>
+  <text x="600" y="248" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="30" font-weight="800" letter-spacing="-1.5" fill="#fafafa" text-anchor="middle">figma-dev-bridge</text>
+  <line x1="420" y1="264" x2="780" y2="264" stroke="#27272a" stroke-width="1"/>
+  <rect x="412" y="274" width="168" height="21" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
+  <text x="496" y="289" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#818cf8" text-anchor="middle">get_current_selection</text>
+  <rect x="588" y="274" width="142" height="21" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
+  <text x="659" y="289" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#818cf8" text-anchor="middle">get_selected_colors</text>
+  <rect x="412" y="301" width="118" height="21" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
+  <text x="471" y="316" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#818cf8" text-anchor="middle">get_node_info</text>
+  <rect x="538" y="301" width="108" height="21" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
+  <text x="592" y="316" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#818cf8" text-anchor="middle">get_variables</text>
+  <rect x="654" y="301" width="94" height="21" rx="5" fill="#09090b" stroke="#27272a" stroke-width="1"/>
+  <text x="701" y="316" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" fill="#52525b" text-anchor="middle">+9 plugin tools</text>
+  <line x1="412" y1="330" x2="756" y2="330" stroke="#0d4a45" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="584" y="326" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="9" font-weight="600" letter-spacing="2" fill="#0d9488" text-anchor="middle">REST API TOOLS</text>
+  <rect x="412" y="336" width="154" height="21" rx="5" fill="#09090b" stroke="#0d4a45" stroke-width="1"/>
+  <text x="489" y="351" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#5eead4" text-anchor="middle">get_file_from_url</text>
+  <rect x="574" y="336" width="154" height="21" rx="5" fill="#09090b" stroke="#0d4a45" stroke-width="1"/>
+  <text x="651" y="351" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="10" fill="#5eead4" text-anchor="middle">get_node_from_url</text>
+  <rect x="472" y="368" width="256" height="28" rx="8" fill="#09090b" stroke="#27272a" stroke-width="1"/>
+  <circle cx="492" cy="382" r="4" fill="#22c55e"/>
+  <text x="504" y="387" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="11" fill="#52525b">:3055  ·  stdio  ·  15 tools</text>
+  <line x1="804" y1="310" x2="932" y2="310" stroke="url(#connR)" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <polygon points="804,305 793,310 804,315" fill="#3b82f6" opacity="0.7"/>
   <text x="866" y="300" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="500" fill="#3f3f46" text-anchor="middle">stdio MCP</text>
-  <!-- AI clients card -->
-  <rect x="932" y="212" width="208" height="200" rx="12" fill="url(#cardTop)" stroke="#27272a" stroke-width="1"/>
-  <text x="1036" y="248" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="600" letter-spacing="2.5" fill="#3f3f46" text-anchor="middle">ANY CLIENT</text>
-  <text x="956" y="278" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">Claude Code</text>
-  <text x="956" y="306" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">Cursor</text>
-  <text x="956" y="334" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">OpenCode</text>
-  <text x="956" y="362" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">Claude Desktop</text>
-  <text x="956" y="390" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="13" font-weight="400" fill="#3f3f46">+ any stdio MCP client</text>
-  <!-- Badges -->
-  <rect x="435" y="462" width="62" height="28" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
-  <text x="466" y="480" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="600" fill="#4ade80" text-anchor="middle">MIT</text>
-  <rect x="509" y="462" width="96" height="28" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
-  <text x="557" y="480" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#60a5fa" text-anchor="middle">Node ≥ 18</text>
-  <rect x="617" y="462" width="120" height="28" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
-  <text x="677" y="480" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#a78bfa" text-anchor="middle">13 MCP tools</text>
-  <rect x="749" y="462" width="96" height="28" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
-  <text x="797" y="480" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#fb923c" text-anchor="middle">TypeScript</text>
-  <text x="600" y="540" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="400" fill="#27272a" text-anchor="middle">github.com/CristinaFores/figma-dev-bridge</text>
+  <rect x="932" y="210" width="216" height="206" rx="12" fill="url(#cardTop)" stroke="#27272a" stroke-width="1"/>
+  <text x="1040" y="244" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="10" font-weight="600" letter-spacing="2.5" fill="#3f3f46" text-anchor="middle">ANY CLIENT</text>
+  <text x="956" y="274" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">Claude Code</text>
+  <text x="956" y="300" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">Cursor</text>
+  <text x="956" y="326" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">OpenCode</text>
+  <text x="956" y="352" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="14" font-weight="500" fill="#d4d4d8">Claude Desktop</text>
+  <text x="956" y="378" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="13" font-weight="400" fill="#3f3f46">+ any stdio MCP</text>
+  <rect x="390" y="496" width="62" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+  <text x="421" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="600" fill="#4ade80" text-anchor="middle">MIT</text>
+  <rect x="464" y="496" width="96" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+  <text x="512" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#60a5fa" text-anchor="middle">Node ≥ 18</text>
+  <rect x="572" y="496" width="120" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+  <text x="632" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#a78bfa" text-anchor="middle">15 MCP tools</text>
+  <rect x="704" y="496" width="96" height="26" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+  <text x="752" y="513" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" font-weight="500" fill="#fb923c" text-anchor="middle">TypeScript</text>
+  <text x="600" y="562" font-family="-apple-system,BlinkMacSystemFont,'Inter',sans-serif" font-size="12" fill="#27272a" text-anchor="middle">github.com/CristinaFores/figma-dev-bridge</text>
 </svg>
