@@ -13,7 +13,7 @@ The Figma plugin runs inside Figma desktop and pushes design context to the AI i
 1. Clone or download this repo
 2. Open **Figma desktop** → Menu → Plugins → Development → **Import plugin from manifest…**
 3. Select `figma-plugin/manifest.json`
-4. Run it: **Plugins → Development → Figma Dev Bridge**
+4. Run it: **Plugins → Development → Design Context Bridge**
 
 ## Status indicators
 

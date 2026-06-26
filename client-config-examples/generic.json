@@ -1,9 +1,9 @@
 {
   "//": "Generic stdio MCP config. Adjust the key format to match your client.",
   "mcpServers": {
-    "figma-dev-bridge": {
+    "design-context-bridge": {
       "command": "npx",
-      "args": ["-y", "figma-dev-bridge"],
+      "args": ["-y", "design-context-bridge"],
       "type": "stdio"
     }
   }

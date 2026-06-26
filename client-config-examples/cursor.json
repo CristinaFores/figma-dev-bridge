@@ -1,9 +1,9 @@
 {
   "//": "Cursor config lives at ~/.cursor/mcp.json or project-level .cursor/mcp.json",
   "mcpServers": {
-    "figma-dev-bridge": {
+    "design-context-bridge": {
       "command": "npx",
-      "args": ["-y", "figma-dev-bridge"],
+      "args": ["-y", "design-context-bridge"],
       "type": "stdio"
     }
   }

@@ -1,9 +1,9 @@
 {
   "//": "OpenCode config lives at ~/.config/opencode/opencode.jsonc. Uses 'type: local' and 'command' as an array.",
   "mcp": {
-    "figma-dev-bridge": {
+    "design-context-bridge": {
       "type": "local",
-      "command": ["npx", "-y", "figma-dev-bridge"],
+      "command": ["npx", "-y", "design-context-bridge"],
       "enabled": true
     }
   }

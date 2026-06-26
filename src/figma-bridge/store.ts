@@ -3,9 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { FigmaDocumentContext } from '../core/types.js';
 
-const STORE_PATH = join(tmpdir(), 'figma-dev-bridge-selection.json');
-const REQ_PATH = join(tmpdir(), 'figma-dev-bridge-requests.json');
-const RES_PATH = join(tmpdir(), 'figma-dev-bridge-responses.json');
+const STORE_PATH = join(tmpdir(), 'design-context-bridge-selection.json');
+const REQ_PATH = join(tmpdir(), 'design-context-bridge-requests.json');
+const RES_PATH = join(tmpdir(), 'design-context-bridge-responses.json');
 
 export interface PluginRequest {
   id: string;

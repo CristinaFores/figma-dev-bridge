@@ -13,7 +13,7 @@ out/
 .DS_Store
 
 # Runtime state (file-based bridge store)
-figma-context-*.json
+design-context-bridge-*.json
 
 # Note: figma-plugin/code.js IS committed so the plugin can be imported
 # into Figma without a build step.

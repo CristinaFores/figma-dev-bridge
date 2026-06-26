@@ -1,18 +1,22 @@
 {
-  "name": "figma-dev-bridge",
+  "name": "design-context-bridge",
   "version": "1.2.0",
   "description": "Client-agnostic MCP server that exposes live Figma design context (selection, colors, text, spacing tokens, variables, prototype interactions, and on-demand node navigation) to any AI agent that supports the Model Context Protocol.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "figma-dev-bridge": "dist/index.js"
+    "design-context-bridge": "dist/index.js"
   },
   "files": [
     "dist",
     "figma-plugin",
     "client-config-examples",
+    "docs",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "DISCLAIMER.md",
+    "SECURITY.md",
+    "PRIVACY.md"
   ],
   "scripts": {
     "build": "tsc",
@@ -42,11 +46,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CristinaFores/figma-dev-bridge.git"
+    "url": "https://github.com/CristinaFores/design-context-bridge.git"
   },
-  "homepage": "https://github.com/CristinaFores/figma-dev-bridge#readme",
+  "homepage": "https://github.com/CristinaFores/design-context-bridge#readme",
   "bugs": {
-    "url": "https://github.com/CristinaFores/figma-dev-bridge/issues"
+    "url": "https://github.com/CristinaFores/design-context-bridge/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0"

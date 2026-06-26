@@ -11,7 +11,7 @@ Read any Figma file by URL — no plugin, no selection needed.
 
 1. Open Figma → click your **avatar** → **Settings**
 2. Go to **Security** → **Personal access tokens**
-3. Click **Generate new token**, name it (e.g. `figma-dev-bridge`), and copy it
+3. Click **Generate new token**, name it (e.g. `design-context-bridge`), and copy it
 
 ## Add it to your client config
 
@@ -20,9 +20,9 @@ Add `FIGMA_ACCESS_TOKEN` to the `env` block of your MCP server entry. Example fo
 ```json
 {
   "mcpServers": {
-    "figma-dev-bridge": {
+    "design-context-bridge": {
       "command": "npx",
-      "args": ["-y", "figma-dev-bridge"],
+      "args": ["-y", "design-context-bridge"],
       "type": "stdio",
       "env": {
         "FIGMA_ACCESS_TOKEN": "figd_xxxxxxxxxxxx"

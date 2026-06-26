@@ -5,7 +5,7 @@ import { registerTools } from './mcp-server/tool-registry.js';
 import { startFigmaBridge } from './figma-bridge/ws-server.js';
 
 const server = new Server(
-  { name: 'figma-dev-bridge', version: '1.0.0' },
+  { name: 'design-context-bridge', version: '1.0.0' },
   { capabilities: { tools: {} } }
 );
 

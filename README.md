@@ -1,22 +1,24 @@
-# figma-dev-bridge
+# Design Context Bridge
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/CristinaFores/figma-dev-bridge/main/.github/cover.svg" alt="figma-dev-bridge" width="100%"/>
+  <img src="https://raw.githubusercontent.com/CristinaFores/design-context-bridge/main/.github/cover.svg" alt="Design Context Bridge — an independent MCP server that connects Figma design context to AI coding agents. Not affiliated with Figma." width="100%"/>
 </p>
 
+<p align="center"><code>npm i -g design-context-bridge</code> · An independent MCP server for Figma</p>
+
 <p align="center">
-  <a href="https://www.npmjs.com/package/figma-dev-bridge"><img src="https://img.shields.io/npm/v/figma-dev-bridge?color=a78bfa&labelColor=18181b" alt="npm"/></a>
+  <a href="https://www.npmjs.com/package/design-context-bridge"><img src="https://img.shields.io/npm/v/design-context-bridge?color=a78bfa&labelColor=18181b" alt="npm"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4ade80?labelColor=18181b" alt="MIT"/></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-60a5fa?labelColor=18181b" alt="Node ≥ 18"/>
   <img src="https://img.shields.io/badge/tools-20-fb923c?labelColor=18181b" alt="20 tools"/>
-  <a href="https://github.com/CristinaFores/figma-dev-bridge/actions"><img src="https://img.shields.io/github/actions/workflow/status/CristinaFores/figma-dev-bridge/ci.yml?branch=main&labelColor=18181b" alt="CI"/></a>
+  <a href="https://github.com/CristinaFores/design-context-bridge/actions"><img src="https://img.shields.io/github/actions/workflow/status/CristinaFores/design-context-bridge/ci.yml?branch=main&labelColor=18181b" alt="CI"/></a>
 </p>
 
 ---
 
 ## What is this?
 
-**figma-dev-bridge** is an [MCP](https://modelcontextprotocol.io) server that turns any AI agent into a frontend developer who can actually *read* a Figma file — not guess from a screenshot.
+**design-context-bridge** is an [MCP](https://modelcontextprotocol.io) server that turns any AI agent into a frontend developer who can actually *read* a Figma file — not guess from a screenshot.
 
 When you hand a developer a Figma and say "build this", they don't just copy the visible pixels. They open the file, identify the components, read the exact colors and type scale, infer the routes the app will need, figure out the hover and disabled states, and export the icons. **This server gives the AI that same access**, so it can do that work for you — faithfully, not approximately.
 
@@ -30,7 +32,7 @@ When you hand a developer a Figma and say "build this", they don't just copy the
 
 A screenshot is a guess. This is the real data.
 
-| Pasting a screenshot | figma-dev-bridge |
+| Pasting a screenshot | design-context-bridge |
 |----------------------|------------------|
 | AI guesses colors from pixels | Reads the exact hex, per layer |
 | Approximate spacing and sizes | Real auto-layout gaps, padding, geometry |
@@ -64,7 +66,7 @@ Pass any `figma.com` URL and the server reads it through the Figma REST API with
 ## Quick start
 
 ```bash
-npx figma-dev-bridge
+npx design-context-bridge
 ```
 
 [Add it to your AI client](docs/clients.md), then ask in plain language:
@@ -99,7 +101,7 @@ The AI calls the right tools, gets real data, and builds from it.
 ## How it works
 
 ```
-Figma desktop              figma-dev-bridge            AI agent
+Figma desktop              design-context-bridge            AI agent
 ──────────────    HTTP     ─────────────────   stdio   ──────────
   Plugin        ────────►  :3055 bridge     ◄────────  Claude Code
   (push/poll)              + MCP server                Cursor

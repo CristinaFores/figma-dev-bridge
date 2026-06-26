@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 240, height: 80, title: 'Figma Dev Bridge' });
+figma.showUI(__html__, { width: 240, height: 80, title: 'Design Context Bridge' });
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 

@@ -3,8 +3,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/CristinaFores/figma-dev-bridge.git
-cd figma-dev-bridge
+git clone https://github.com/CristinaFores/design-context-bridge.git
+cd design-context-bridge
 npm install
 npm run build:all
 ```

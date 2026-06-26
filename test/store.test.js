@@ -6,9 +6,9 @@ import { join } from 'node:path';
 import { store, requestFromPlugin } from '../dist/figma-bridge/store.js';
 
 const FILES = [
-  'figma-dev-bridge-selection.json',
-  'figma-dev-bridge-requests.json',
-  'figma-dev-bridge-responses.json',
+  'design-context-bridge-selection.json',
+  'design-context-bridge-requests.json',
+  'design-context-bridge-responses.json',
 ].map((f) => join(tmpdir(), f));
 
 beforeEach(() => {

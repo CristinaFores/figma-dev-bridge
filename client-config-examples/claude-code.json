@@ -1,9 +1,9 @@
 {
   "//": "Claude Code config lives at ~/.claude/settings.json or project-level .claude/settings.json",
   "mcpServers": {
-    "figma-dev-bridge": {
+    "design-context-bridge": {
       "command": "npx",
-      "args": ["-y", "figma-dev-bridge"],
+      "args": ["-y", "design-context-bridge"],
       "type": "stdio"
     }
   }
