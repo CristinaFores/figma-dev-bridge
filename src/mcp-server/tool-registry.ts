@@ -41,10 +41,10 @@ export function registerTools(server: Server): void {
     const { name, arguments: args = {} } = request.params;
     switch (name) {
       case GET_CURRENT_SELECTION:     return handleGetCurrentSelection();
-      case GET_CURRENT_PAGE:          return handleGetCurrentPage();
-      case GET_ALL_PAGES:             return handleGetAllPages();
+      case GET_CURRENT_PAGE:          return handleGetCurrentPage(args as Record<string, unknown>);
+      case GET_ALL_PAGES:             return handleGetAllPages(args as Record<string, unknown>);
       case GET_FRAME_BY_NAME:         return handleGetFrameByName(args as Record<string, unknown>);
-      case GET_COMPONENT_DEFINITIONS: return handleGetComponentDefinitions();
+      case GET_COMPONENT_DEFINITIONS: return handleGetComponentDefinitions(args as Record<string, unknown>);
       case GET_SELECTED_COLORS:       return handleGetSelectedColors();
       case GET_SELECTED_TEXTS:        return handleGetSelectedTexts();
       case GET_VARIABLES:             return handleGetVariables(args as Record<string, unknown>);
