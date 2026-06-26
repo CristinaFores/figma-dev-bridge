@@ -13,6 +13,8 @@ import { GET_SELECTED_INTERACTIONS, getSelectedInteractionsDefinition, handleGet
 import { GET_NODE_INFO, getNodeInfoDefinition, handleGetNodeInfo } from './tools/get-node-info.js';
 import { GET_NODES_INFO, getNodesInfoDefinition, handleGetNodesInfo } from './tools/get-nodes-info.js';
 import { SCAN_NODES_BY_TYPES, scanNodesByTypesDefinition, handleScanNodesByTypes } from './tools/scan-nodes-by-types.js';
+import { GET_FILE_FROM_URL, getFileFromUrlDefinition, handleGetFileFromUrl } from '../figma-rest/tools/get-file-from-url.js';
+import { GET_NODE_FROM_URL, getNodeFromUrlDefinition, handleGetNodeFromUrl } from '../figma-rest/tools/get-node-from-url.js';
 
 export function registerTools(server: Server): void {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -30,6 +32,8 @@ export function registerTools(server: Server): void {
       getNodeInfoDefinition,
       getNodesInfoDefinition,
       scanNodesByTypesDefinition,
+      getFileFromUrlDefinition,
+      getNodeFromUrlDefinition,
     ],
   }));
 
@@ -49,6 +53,8 @@ export function registerTools(server: Server): void {
       case GET_NODE_INFO:             return handleGetNodeInfo(args as Record<string, unknown>);
       case GET_NODES_INFO:            return handleGetNodesInfo(args as Record<string, unknown>);
       case SCAN_NODES_BY_TYPES:       return handleScanNodesByTypes(args as Record<string, unknown>);
+      case GET_FILE_FROM_URL:         return handleGetFileFromUrl(args as Record<string, unknown>);
+      case GET_NODE_FROM_URL:         return handleGetNodeFromUrl(args as Record<string, unknown>);
       default:
         return { content: [{ type: 'text', text: `Unknown tool: ${name}` }], isError: true };
     }

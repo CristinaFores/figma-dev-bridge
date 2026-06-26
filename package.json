@@ -1,6 +1,6 @@
 {
   "name": "figma-dev-bridge",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Client-agnostic MCP server that exposes live Figma design context (selection, colors, text, spacing tokens, variables, prototype interactions, and on-demand node navigation) to any AI agent that supports the Model Context Protocol.",
   "type": "module",
   "main": "dist/index.js",

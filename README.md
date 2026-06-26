@@ -1,4 +1,8 @@
-# Figma Dev Bridge
+# figma-dev-bridge
+
+<p align="center">
+  <img src=".github/cover.svg" alt="figma-dev-bridge — MCP server that connects Figma to any AI agent" width="100%"/>
+</p>
 
 A **client-agnostic [MCP](https://modelcontextprotocol.io) server** that gives any AI agent live access to your Figma design context: the current selection, colors, text, spacing tokens, variables, prototype interactions — and on-demand navigation of the **entire document** by node id.
 
@@ -34,7 +38,17 @@ It is **not** tied to any single client. It works with Claude Code, Cursor, Open
 
 ## Installation
 
-### Option A — from source (recommended while developing)
+### Option A — npx (recommended)
+
+No install needed:
+
+```bash
+npx figma-dev-bridge
+```
+
+Configure your client to run `npx -y figma-dev-bridge` as the command (see [`client-config-examples/`](client-config-examples)).
+
+### Option B — from source
 
 ```bash
 git clone https://github.com/CristinaFores/figma-dev-bridge.git
@@ -44,12 +58,6 @@ npm run build:all        # builds the MCP server and the plugin
 ```
 
 Your server entry point is then `dist/index.js`.
-
-### Option B — from npm (once published)
-
-```bash
-npx figma-dev-bridge
-```
 
 ---
 
@@ -64,7 +72,6 @@ Ready-to-copy snippets live in [`client-config-examples/`](client-config-example
   "mcpServers": {
     "figma-dev-bridge": {
       "command": "node",
-      "args": ["/absolute/path/to/figma-dev-bridge/dist/index.js"],
       "type": "stdio"
     }
   }
@@ -78,7 +85,6 @@ Ready-to-copy snippets live in [`client-config-examples/`](client-config-example
   "mcp": {
     "figma-dev-bridge": {
       "type": "local",
-      "command": ["node", "/absolute/path/to/figma-dev-bridge/dist/index.js"],
       "enabled": true
     }
   }
@@ -99,6 +105,49 @@ The plugin window shows a status dot:
 - 🔴 **Sin bridge** — the MCP server isn't running (start your AI client, or run `npm start`).
 
 > The plugin must stay open in Figma for the tools to work. Selection tools serve the last cached data; on-demand tools require the plugin to be live.
+
+---
+
+## Two ways to read your design
+
+### Mode 1 — Select in Figma, ask the AI
+
+Select any frame, component, or layer in Figma. The plugin pushes that context automatically. Then just ask:
+
+```
+"What colors does this component use?"
+"List all the text nodes in this selection."
+"What spacing tokens are applied here?"
+```
+
+The AI reads whatever you have selected — no extra arguments needed.
+
+**Tools:** `get_current_selection` · `get_selected_colors` · `get_selected_texts` · `get_selected_spacing` · `get_selected_interactions`
+
+---
+
+### Mode 2 — Navigate by node id (no selection needed)
+
+Every Figma node has an id. Get the ids from the document overview tools, then drill in on-demand — the plugin fetches each node live via `getNodeByIdAsync`, so you never have to load the whole tree at once.
+
+```
+# Step 1 — get top-level frame ids for the current page
+get_current_page
+
+# Step 2 — drill into a frame
+get_node_info { id: "123:456", depth: 2 }
+
+# Step 3 — keep going, lazily
+get_node_info { id: "123:789", depth: 1 }
+
+# Or jump straight to what you need
+scan_nodes_by_types { types: ["INSTANCE"] }   → find all component instances
+get_node_info { id: "..." }                   → inspect one
+```
+
+The plugin must be **open and connected** (green dot) for on-demand tools to respond.
+
+**Tools:** `get_current_page` · `get_all_pages` · `get_frame_by_name` · `get_node_info` · `get_nodes_info` · `scan_nodes_by_types` · `get_variables` · `get_component_definitions`
 
 ---
 
@@ -134,6 +183,15 @@ The plugin window shows a status dot:
 | `get_nodes_info` | many `getNodeByIdAsync` | Several nodes by id in one call |
 | `scan_nodes_by_types` | tree walk | Every node matching `types` (e.g. `["TEXT","INSTANCE"]`), capped at 1000 |
 
+### REST API — by URL (no plugin needed)
+
+Requires `FIGMA_ACCESS_TOKEN` in your environment.
+
+| Tool | Returns |
+| --- | --- |
+| `get_file_from_url` | Pages, top-level frames, and metadata from any Figma URL |
+| `get_node_from_url` | A specific node from a URL that includes `?node-id=X-Y` |
+
 ### Typical workflow
 
 ```
@@ -157,6 +215,7 @@ get_node_info { id }                           → inspect one
 | Env var | Default | Notes |
 | --- | --- | --- |
 | `FIGMA_BRIDGE_PORT` | `3055` | Port for the local bridge. **If you change it, you must also change the port hard-coded in `figma-plugin/code.ts`** and rebuild the plugin, since the plugin can't read env vars. |
+| `FIGMA_ACCESS_TOKEN` | — | Personal access token from Figma → Settings → Security → Access tokens. Required only for the URL-based tools (`get_file_from_url`, `get_node_from_url`). |
 
 ---
 
