@@ -1,4 +1,8 @@
-# Figma Dev Bridge
+# figma-dev-bridge
+
+<p align="center">
+  <img src=".github/cover.svg" alt="figma-dev-bridge — MCP server that connects Figma to any AI agent" width="100%"/>
+</p>
 
 A **client-agnostic [MCP](https://modelcontextprotocol.io) server** that gives any AI agent live access to your Figma design context: the current selection, colors, text, spacing tokens, variables, prototype interactions — and on-demand navigation of the **entire document** by node id.
 
@@ -34,7 +38,17 @@ It is **not** tied to any single client. It works with Claude Code, Cursor, Open
 
 ## Installation
 
-### Option A — from source (recommended while developing)
+### Option A — npx (recommended)
+
+No install needed:
+
+```bash
+npx figma-dev-bridge
+```
+
+Configure your client to run `npx -y figma-dev-bridge` as the command (see [`client-config-examples/`](client-config-examples)).
+
+### Option B — from source
 
 ```bash
 git clone https://github.com/CristinaFores/figma-dev-bridge.git
@@ -44,12 +58,6 @@ npm run build:all        # builds the MCP server and the plugin
 ```
 
 Your server entry point is then `dist/index.js`.
-
-### Option B — from npm (once published)
-
-```bash
-npx figma-dev-bridge
-```
 
 ---
 
@@ -97,6 +105,49 @@ The plugin window shows a status dot:
 - 🔴 **Sin bridge** — the MCP server isn't running (start your AI client, or run `npm start`).
 
 > The plugin must stay open in Figma for the tools to work. Selection tools serve the last cached data; on-demand tools require the plugin to be live.
+
+---
+
+## Two ways to read your design
+
+### Mode 1 — Select in Figma, ask the AI
+
+Select any frame, component, or layer in Figma. The plugin pushes that context automatically. Then just ask:
+
+```
+"What colors does this component use?"
+"List all the text nodes in this selection."
+"What spacing tokens are applied here?"
+```
+
+The AI reads whatever you have selected — no extra arguments needed.
+
+**Tools:** `get_current_selection` · `get_selected_colors` · `get_selected_texts` · `get_selected_spacing` · `get_selected_interactions`
+
+---
+
+### Mode 2 — Navigate by node id (no selection needed)
+
+Every Figma node has an id. Get the ids from the document overview tools, then drill in on-demand — the plugin fetches each node live via `getNodeByIdAsync`, so you never have to load the whole tree at once.
+
+```
+# Step 1 — get top-level frame ids for the current page
+get_current_page
+
+# Step 2 — drill into a frame
+get_node_info { id: "123:456", depth: 2 }
+
+# Step 3 — keep going, lazily
+get_node_info { id: "123:789", depth: 1 }
+
+# Or jump straight to what you need
+scan_nodes_by_types { types: ["INSTANCE"] }   → find all component instances
+get_node_info { id: "..." }                   → inspect one
+```
+
+The plugin must be **open and connected** (green dot) for on-demand tools to respond.
+
+**Tools:** `get_current_page` · `get_all_pages` · `get_frame_by_name` · `get_node_info` · `get_nodes_info` · `scan_nodes_by_types` · `get_variables` · `get_component_definitions`
 
 ---
 
