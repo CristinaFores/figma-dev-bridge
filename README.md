@@ -8,40 +8,56 @@
   <a href="https://www.npmjs.com/package/figma-dev-bridge"><img src="https://img.shields.io/npm/v/figma-dev-bridge?color=a78bfa&labelColor=18181b" alt="npm"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4ade80?labelColor=18181b" alt="MIT"/></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-60a5fa?labelColor=18181b" alt="Node ≥ 18"/>
-  <img src="https://img.shields.io/badge/tools-15-fb923c?labelColor=18181b" alt="15 tools"/>
+  <img src="https://img.shields.io/badge/tools-20-fb923c?labelColor=18181b" alt="20 tools"/>
   <a href="https://github.com/CristinaFores/figma-dev-bridge/actions"><img src="https://img.shields.io/github/actions/workflow/status/CristinaFores/figma-dev-bridge/ci.yml?branch=main&labelColor=18181b" alt="CI"/></a>
 </p>
 
 ---
 
-Most "Figma + AI" setups only expose what's currently selected — and grind to a halt on large files.
+## What is this?
 
-**figma-dev-bridge** is a client-agnostic [MCP](https://modelcontextprotocol.io) server that solves both problems. It streams your live selection continuously **and** lets the agent walk the whole document lazily, node by node, without ever loading the full tree at once. And if you just have a Figma URL, you don't even need the plugin.
+**figma-dev-bridge** is an [MCP](https://modelcontextprotocol.io) server that turns any AI agent into a frontend developer who can actually *read* a Figma file — not guess from a screenshot.
 
-| Without figma-dev-bridge | With figma-dev-bridge |
-|--------------------------|----------------------|
-| Copy-paste colors, spacing, tokens manually | AI reads them directly from Figma |
-| Share screenshots for the AI to guess from | AI inspects the real node tree |
-| Limited to what's selected | Navigate the whole document by node id |
-| Stuck without the Figma app | Read any file via URL + access token |
+When you hand a developer a Figma and say "build this", they don't just copy the visible pixels. They open the file, identify the components, read the exact colors and type scale, infer the routes the app will need, figure out the hover and disabled states, and export the icons. **This server gives the AI that same access**, so it can do that work for you — faithfully, not approximately.
+
+## Who is it for?
+
+- **Frontend developers** who get a Figma and need to build it pixel-faithful, fast.
+- **Designers and PMs** who want an AI to reason about a design — routes, components, tokens — without writing code.
+- **Anyone building AI tooling** that needs structured, reliable design data instead of vision-model guesswork.
+
+## Why not just paste a screenshot?
+
+A screenshot is a guess. This is the real data.
+
+| Pasting a screenshot | figma-dev-bridge |
+|----------------------|------------------|
+| AI guesses colors from pixels | Reads the exact hex, per layer |
+| Approximate spacing and sizes | Real auto-layout gaps, padding, geometry |
+| No idea what's a reusable component | Identifies components and their variants |
+| Invents hover/disabled states | Reads the actual prototype interactions |
+| You export icons by hand | `find_assets` + `export_image` build the folder |
+| Can't see tokens | Derives a full design system, even without Figma Variables |
 
 ---
 
 ## Two ways to connect
 
-Choose based on your workflow — or use both at the same time.
+Everything works in **both** modes — choose by workflow, or use both at once.
 
-### Plugin mode
+### 🔌 Plugin mode
 
-The Figma plugin runs inside Figma desktop and pushes design context to the AI automatically. The agent sees your selection in real time and can navigate the full document on demand.
+A Figma plugin runs inside Figma desktop and pushes your live selection to the AI in real time. No token needed. Best while actively designing — the AI follows what you select.
 
-**Best for:** active design work where you want the AI to follow your selection.
+→ [Plugin setup](docs/plugin-setup.md)
 
-### REST API mode
+### 🌐 REST API mode
 
-Pass any `figma.com` URL and the server calls the Figma REST API directly. No plugin, no Figma desktop, no selection needed — just a personal access token.
+Pass any `figma.com` URL and the server reads it through the Figma REST API with a personal access token. No plugin, no Figma desktop, no selection. Best for reviewing files you don't have open, CI, or headless use.
 
-**Best for:** reviewing files you don't have open, or running the AI in a headless environment.
+→ [REST API setup](docs/rest-api.md)
+
+> The design-system, structure, variant and asset-export tools run in REST mode — pass a URL and they read the whole file.
 
 ---
 
@@ -51,13 +67,32 @@ Pass any `figma.com` URL and the server calls the Figma REST API directly. No pl
 npx figma-dev-bridge
 ```
 
-Add it to your AI client, connect the plugin or your access token, and start asking:
+[Add it to your AI client](docs/clients.md), then ask in plain language:
 
 ```
-"What colors does this component use?"
-"Find all instances of the Button component in this file."
-"What spacing tokens are applied to this card?"
+"Extract the design system from this Figma: <url>"
+"What routes would this app have?"
+"What variants does this Button component have?"
+"Export every icon in this file as SVG into ./assets"
+"Build this landing page faithfully — components, tokens, hover states and all."
 ```
+
+The AI calls the right tools, gets real data, and builds from it.
+
+---
+
+## What it can do
+
+| Capability | Tools | How you'd ask |
+|------------|-------|---------------|
+| **Read the live selection** | `get_current_selection`, `get_selected_colors`, `get_selected_texts`, `get_selected_spacing`, `get_selected_interactions` | "What colors are in my selection?" |
+| **Navigate any file** | `get_all_pages`, `get_current_page`, `get_frame_by_name`, `get_node_info`, `get_nodes_info`, `scan_nodes_by_types` | "Find the Checkout frame and show its tree" |
+| **Derive a design system** | `extract_design_system`, `get_variables`, `get_component_definitions` | "Give me the tokens: colors, type scale, spacing" |
+| **Plan the build** | `analyze_structure`, `get_component_variants` | "What routes and components does this need?" |
+| **Export assets** | `find_assets`, `export_image` | "Export all icons as SVG" |
+| **Start from a URL** | `get_file_from_url`, `get_node_from_url` | "Read this Figma link" |
+
+→ Full reference with every argument in [docs/tools.md](docs/tools.md)
 
 ---
 
@@ -73,9 +108,9 @@ Figma desktop              figma-dev-bridge            AI agent
   Any file URL ────────►  REST API client              VS Code…
 ```
 
-1. The **plugin** continuously pushes selection context and answers on-demand node requests from the AI.
-2. The **MCP server** exposes 15 tools over stdio — selection tools serve cached context instantly; navigation tools fetch nodes live.
-3. The **REST client** calls `api.figma.com` for any file when `FIGMA_ACCESS_TOKEN` is set.
+1. The **plugin** pushes selection context and answers on-demand node requests in real time.
+2. The **MCP server** exposes 20 tools over stdio.
+3. The **REST client** reads any file from `api.figma.com` when `FIGMA_ACCESS_TOKEN` is set — and powers the analysis and asset tools.
 
 ---
 
@@ -86,36 +121,7 @@ Figma desktop              figma-dev-bridge            AI agent
 | [Plugin setup](docs/plugin-setup.md) | Install the Figma plugin, verify the bridge, configure the port |
 | [REST API setup](docs/rest-api.md) | Generate a Figma token, add it to your client config |
 | [Client configuration](docs/clients.md) | Claude Code · Claude Desktop · Cursor · OpenCode · Windsurf · VS Code |
-| [Tools reference](docs/tools.md) | All 15 tools — arguments, return values, and usage examples |
-
----
-
-## Tools at a glance
-
-| Group | Tools | Mode |
-|-------|-------|------|
-| **Selection** | `get_current_selection` · `get_selected_colors` · `get_selected_texts` · `get_selected_spacing` · `get_selected_interactions` | Plugin |
-| **Document** | `get_current_page` · `get_all_pages` · `get_frame_by_name` · `get_component_definitions` · `get_variables` | Plugin |
-| **Navigation** | `get_node_info` · `get_nodes_info` · `scan_nodes_by_types` | Plugin |
-| **REST API** | `get_file_from_url` · `get_node_from_url` | Token |
-
-→ Full reference with arguments and examples in [docs/tools.md](docs/tools.md)
-
----
-
-## Where to start
-
-**I want to use it with the plugin**
-→ [Plugin setup](docs/plugin-setup.md) then [configure your client](docs/clients.md)
-
-**I want to read files by URL without the plugin**
-→ [REST API setup](docs/rest-api.md) then [configure your client](docs/clients.md)
-
-**I want to see all available tools**
-→ [Tools reference](docs/tools.md)
-
-**I want to contribute or run it from source**
-→ [CONTRIBUTING.md](CONTRIBUTING.md)
+| [Tools reference](docs/tools.md) | All 20 tools — arguments, return values, and usage patterns |
 
 ---
 

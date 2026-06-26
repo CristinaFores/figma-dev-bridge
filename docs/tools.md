@@ -49,6 +49,37 @@ get_node_info { url, id: "..." }                      # inspect one
 
 ---
 
+## Analysis tools · REST only
+
+These read the whole file and reason about it like a developer planning the build.
+
+| Tool | Arguments | Returns |
+|------|-----------|---------|
+| `extract_design_system` | `url`, `id?` | Colors (with usage counts), type scale, spacing scale, border radii and shadows — derived from the design even when no Figma Variables exist. Add a node-id to scope it to one frame |
+| `analyze_structure` | `url` | Pages and screens, suggested app routes from screen names, component inventory, and most-used instances. Answers "what routes would this app have?" and "how do we split the work?" |
+| `get_component_variants` | `url`, `id?` | A component set's property definitions and every variant's values (e.g. `State=Hover`), so you can recreate all states faithfully |
+
+---
+
+## Asset tools · REST only
+
+Build an `assets/` or `icons/` folder from a design.
+
+| Tool | Arguments | Returns |
+|------|-----------|---------|
+| `find_assets` | `url` | Export-worthy nodes (export settings, vectors, icon/logo-named layers) with ids and suggested filenames |
+| `export_image` | `url`, `ids?`, `format?`, `scale?` | SVG source inlined (ready to write to a file), or a render URL for `png`/`jpg`. `format`: `svg` (default) · `png` · `jpg` |
+
+**Asset export pattern:**
+
+```
+find_assets { url }                              # discover icons/vectors
+export_image { url, ids: [...], format: "svg" }  # get the SVG source for each
+# → write each asset.svg to your assets/ folder
+```
+
+---
+
 ## File entry points · REST only
 
 Convenience tools when you start from a raw URL.
