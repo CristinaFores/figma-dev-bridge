@@ -127,6 +127,23 @@ Figma desktop              design-context-bridge            AI agent
 
 ---
 
+## Token handling
+
+Your `FIGMA_ACCESS_TOKEN` is read only from the environment and sent only to `api.figma.com` in the `X-Figma-Token` header. It is **never logged, cached, or written to disk** by this server, and never included in tool responses. Treat it like a password: use a scoped Personal Access Token, never commit it, and revoke it if exposed. PATs are intended for local/single-user use — for a public, multi-user product, use Figma OAuth instead.
+
+## Security & privacy
+
+- The local bridge listens on **`127.0.0.1:3055` only** — never expose it to untrusted networks.
+- This tool runs entirely on your machine; its maintainers receive no data.
+- Design data is relayed to the AI client you connect, which may forward it to its model provider.
+- **Only use it with Figma files you have permission to access.**
+
+See [SECURITY.md](SECURITY.md) and [PRIVACY.md](PRIVACY.md) for details, and how to report a vulnerability.
+
+## Disclaimer
+
+This project is **independent** and is **not affiliated with, endorsed by, or sponsored by Figma**. "Figma" is a trademark of Figma, Inc., used here only descriptively to indicate compatibility. See [DISCLAIMER.md](DISCLAIMER.md).
+
 ## License
 
 [MIT](LICENSE) © Cristina Fores Campos
