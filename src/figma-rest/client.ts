@@ -6,15 +6,28 @@ function getToken(): string {
   return token;
 }
 
-async function figmaFetch(path: string): Promise<unknown> {
+const CACHE_TTL_MS = 30_000;
+const cache = new Map<string, { data: unknown; expiresAt: number }>();
+
+async function figmaFetch(path: string, attempt = 0): Promise<unknown> {
+  const cached = cache.get(path);
+  if (cached && Date.now() < cached.expiresAt) return cached.data;
   const res = await fetch(`${FIGMA_API}${path}`, {
     headers: { 'X-Figma-Token': getToken() },
   });
+  if (res.status === 429 && attempt < 3) {
+    const retryAfter = res.headers.get('Retry-After');
+    const wait = retryAfter ? parseFloat(retryAfter) * 1000 : 1000 * 2 ** attempt;
+    await new Promise((r) => setTimeout(r, wait));
+    return figmaFetch(path, attempt + 1);
+  }
   if (!res.ok) {
     const body = await res.text();
     throw new Error(`Figma API ${res.status}: ${body}`);
   }
-  return res.json();
+  const data = await res.json();
+  cache.set(path, { data, expiresAt: Date.now() + CACHE_TTL_MS });
+  return data;
 }
 
 export function parseFigmaUrl(url: string): { fileKey: string; nodeId?: string } {
