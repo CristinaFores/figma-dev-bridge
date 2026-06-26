@@ -51,7 +51,7 @@ Everything works in **both** modes — choose by workflow, or use both at once.
 
 A Figma plugin runs inside Figma desktop and pushes your live selection to the AI in real time. No token needed. Best while actively designing — the AI follows what you select.
 
-→ [Plugin setup](docs/plugin-setup.md)
+→ [Install from Figma Community](https://www.figma.com/community/plugin/1651991638967929445) · [Plugin setup](docs/plugin-setup.md)
 
 ### 🌐 REST API mode
 
