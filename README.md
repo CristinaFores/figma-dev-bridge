@@ -1,148 +1,56 @@
 # figma-dev-bridge
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/CristinaFores/figma-dev-bridge/main/.github/cover.svg" alt="figma-dev-bridge — MCP server that connects Figma to any AI agent" width="100%"/>
+  <img src="https://raw.githubusercontent.com/CristinaFores/figma-dev-bridge/main/.github/cover.svg" alt="figma-dev-bridge" width="100%"/>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/figma-dev-bridge"><img src="https://img.shields.io/npm/v/figma-dev-bridge?color=a78bfa&labelColor=18181b" alt="npm version"/></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4ade80?labelColor=18181b" alt="MIT license"/></a>
+  <a href="https://www.npmjs.com/package/figma-dev-bridge"><img src="https://img.shields.io/npm/v/figma-dev-bridge?color=a78bfa&labelColor=18181b" alt="npm"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4ade80?labelColor=18181b" alt="MIT"/></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-60a5fa?labelColor=18181b" alt="Node ≥ 18"/>
-  <img src="https://img.shields.io/badge/tools-15-fb923c?labelColor=18181b" alt="15 MCP tools"/>
+  <img src="https://img.shields.io/badge/tools-15-fb923c?labelColor=18181b" alt="15 tools"/>
 </p>
 
-A **client-agnostic [MCP](https://modelcontextprotocol.io) server** that gives any AI agent live access to your Figma design context — selection, colors, text, spacing tokens, variables, prototype interactions — and on-demand navigation of the **entire document** by node id. Also supports reading any Figma file directly via URL using the Figma REST API.
+**Client-agnostic MCP server** that gives any AI agent live access to your Figma designs — selection, colors, text, spacing tokens, variables, prototype interactions, and full document navigation by node id.
 
-Works with Claude Code, Cursor, OpenCode, Claude Desktop, or anything that speaks MCP over stdio.
-
----
-
-## How it works
-
-```
-┌──────────────┐   stdio    ┌─────────────────────┐   HTTP :3055   ┌──────────────┐
-│  AI client   │ ◀───────▶  │  MCP server         │ ◀───────────▶  │ Figma plugin │
-│ (Claude Code,│   tools    │  (this package)     │  push + poll   │ (in Figma)   │
-│  Cursor, …)  │            │  + local bridge     │                │              │
-└──────────────┘            └─────────────────────┘                └──────────────┘
-                                      ▲
-                                      │ fetch()
-                               api.figma.com/v1
-                             (REST API — no plugin)
-```
+Works with **Claude Code, Cursor, OpenCode, Claude Desktop, Windsurf, VS Code** and any other tool that supports the [Model Context Protocol](https://modelcontextprotocol.io).
 
 ---
 
-## Requirements
+## Two ways to connect
 
-- **Node.js ≥ 18**
-- **Figma desktop app** — for plugin mode
-- An MCP-compatible AI client
+### Option A — Figma Plugin (local bridge)
+
+The plugin runs inside Figma desktop and pushes design context to the AI in real time. Selections update automatically. On-demand tools let the agent walk the whole document by node id without loading the full tree.
+
+**Requires:** Figma desktop app · Node.js ≥ 18 · Plugin installed (see below)
+
+### Option B — Figma REST API (no plugin)
+
+Pass any `figma.com` URL directly. The server calls the Figma REST API and returns file structure, pages, frames, and node data.
+
+**Requires:** Figma personal access token · Node.js ≥ 18
+
+Both options can run at the same time — the plugin handles the live selection flow, the REST API handles arbitrary file lookups.
 
 ---
 
-## Installation
-
-### Option A — npx (recommended)
+## Quick start
 
 ```bash
 npx figma-dev-bridge
 ```
 
-### Option B — from source
-
-```bash
-git clone https://github.com/CristinaFores/figma-dev-bridge.git
-cd figma-dev-bridge
-npm install
-npm run build:all
-```
-
 ---
 
-## Setup
+## Client setup
 
-### 1. Configure your AI client
+Add figma-dev-bridge to your MCP client config. Use the snippets below for each client.
 
-**Claude Code / Cursor / Claude Desktop**
+### Claude Code
 
-```json
-{
-  "mcpServers": {
-    "figma-dev-bridge": {
-      "command": "npx",
-      "args": ["-y", "figma-dev-bridge"],
-      "type": "stdio"
-    }
-  }
-}
-```
+Edit `~/.claude.json` (or `.claude/settings.json` in your project):
 
-**OpenCode** (`~/.config/opencode/opencode.jsonc`)
-
-```json
-{
-  "mcp": {
-    "figma-dev-bridge": {
-      "type": "local",
-      "command": ["npx", "-y", "figma-dev-bridge"],
-      "enabled": true
-    }
-  }
-}
-```
-
-Ready-to-copy snippets for all clients in [`client-config-examples/`](client-config-examples).
-
-### 2. Install the Figma plugin
-
-1. Figma desktop → **Menu → Plugins → Development → Import plugin from manifest…**
-2. Select **`figma-plugin/manifest.json`** from this repo
-3. Run it: **Plugins → Development → Figma Dev Bridge**
-
-> 🟢 **Conectado al bridge** — everything is connected  
-> 🔴 **Sin bridge** — start your AI client first, then reopen the plugin
-
----
-
-## Three ways to read your design
-
-### Mode 1 — Select in Figma, ask the AI
-
-Select any frame, component, or layer. The plugin pushes context automatically.
-
-```
-"What colors does this component use?"
-"List all text nodes in this selection."
-"What spacing tokens are applied here?"
-```
-
-No arguments needed — the AI reads whatever you have selected.
-
-### Mode 2 — Navigate by node id
-
-Get frame ids from `get_current_page`, then drill in on-demand. The plugin fetches each node live — no need to load the whole tree.
-
-```
-get_current_page                          # get top-level frame ids
-get_node_info { id: "123:456", depth: 2 } # drill in
-scan_nodes_by_types { types: ["INSTANCE"] } # find all component instances
-```
-
-### Mode 3 — Read by URL (no plugin needed)
-
-Pass any Figma URL directly — no plugin, no selection needed.
-
-**Step 1 — Get a Figma personal access token**
-
-1. Open Figma desktop (or figma.com)
-2. Click your avatar → **Settings → Security**
-3. Scroll to **Personal access tokens → Generate new token**
-4. Give it a name (e.g. `figma-dev-bridge`) and copy it
-
-**Step 2 — Add it to your MCP client config**
-
-**Claude Code / Cursor / Claude Desktop**
 ```json
 {
   "mcpServers": {
@@ -158,7 +66,48 @@ Pass any Figma URL directly — no plugin, no selection needed.
 }
 ```
 
-**OpenCode**
+### Claude Desktop
+
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "figma-dev-bridge": {
+      "command": "npx",
+      "args": ["-y", "figma-dev-bridge"],
+      "type": "stdio",
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
+```
+
+### Cursor
+
+Edit `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "figma-dev-bridge": {
+      "command": "npx",
+      "args": ["-y", "figma-dev-bridge"],
+      "type": "stdio",
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
+```
+
+### OpenCode
+
+Edit `~/.config/opencode/opencode.jsonc`:
+
 ```json
 {
   "mcp": {
@@ -174,116 +123,213 @@ Pass any Figma URL directly — no plugin, no selection needed.
 }
 ```
 
-Then ask the AI:
+### Windsurf
+
+Edit `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "figma-dev-bridge": {
+      "command": "npx",
+      "args": ["-y", "figma-dev-bridge"],
+      "type": "stdio",
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
 ```
-get_file_from_url { url: "https://www.figma.com/design/ABC123/..." }
-get_node_from_url { url: "https://www.figma.com/design/ABC123/...?node-id=0-1" }
+
+### VS Code (Copilot / Cline / Continue)
+
+Edit `.vscode/mcp.json` in your workspace, or in user settings:
+
+```json
+{
+  "mcpServers": {
+    "figma-dev-bridge": {
+      "command": "npx",
+      "args": ["-y", "figma-dev-bridge"],
+      "type": "stdio",
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
+```
+
+> `FIGMA_ACCESS_TOKEN` is only required for the REST API tools (`get_file_from_url`, `get_node_from_url`). For plugin-only usage you can omit it.
+
+---
+
+## Option A — Plugin setup
+
+### Step 1 — Install the plugin
+
+1. Clone or download this repo
+2. Open **Figma desktop** → Menu → Plugins → Development → **Import plugin from manifest…**
+3. Select `figma-plugin/manifest.json` from this repo
+4. Run it: **Plugins → Development → Figma Dev Bridge**
+
+The plugin window shows a status indicator:
+
+- 🟢 **Conectado al bridge** — the AI agent can read your design
+- 🔴 **Sin bridge** — start your AI client first, then reopen the plugin
+
+### Step 2 — Keep the plugin open
+
+The plugin must stay open while you work. Selection-based tools serve the last pushed context even if you switch focus, but on-demand navigation tools (`get_node_info`, etc.) require the plugin to be live.
+
+---
+
+## Option B — REST API setup
+
+### Step 1 — Get a Figma personal access token
+
+1. Open Figma (desktop or web) → click your **avatar** → **Settings**
+2. Go to **Security** → scroll to **Personal access tokens**
+3. Click **Generate new token**, give it a name (e.g. `figma-dev-bridge`), and copy it
+
+### Step 2 — Add it to your client config
+
+Add `"FIGMA_ACCESS_TOKEN": "your-token-here"` inside the `env` block of your client config (see the snippets above).
+
+### Step 3 — Use it
+
+```
+get_file_from_url { url: "https://www.figma.com/design/ABC123/My-File" }
+get_node_from_url { url: "https://www.figma.com/design/ABC123/My-File?node-id=0-1" }
 ```
 
 ---
 
-## Tools
+## Tools reference
 
-### 🟣 Selection — plugin pushes automatically
+### Plugin tools — selection (auto-pushed)
 
-| Tool | Returns |
-|------|---------|
-| `get_current_selection` | Selected nodes with fills, position, size, and text |
-| `get_selected_colors` | Unique hex colors from the selection and its descendants |
-| `get_selected_texts` | Text content, font family, and font size |
-| `get_selected_spacing` | Auto-layout spacing with bound token names (local or library) |
-| `get_selected_interactions` | Prototype animations: trigger, action, transition, duration, easing |
+These tools serve whatever is currently selected in Figma. No arguments needed.
 
-### 🔵 Document overview — plugin required
+| Tool | What it does |
+|------|-------------|
+| `get_current_selection` | Returns the selected nodes with fills, position, size, and text content |
+| `get_selected_colors` | Returns all unique hex colors found in the selection and its descendants |
+| `get_selected_texts` | Returns all text nodes with content, font family, and font size |
+| `get_selected_spacing` | Returns auto-layout spacing (gap, padding) including the name of any bound spacing token from local or library variables |
+| `get_selected_interactions` | Returns prototype interactions: trigger (ON_CLICK, ON_HOVER…), action, destination, transition type (SMART_ANIMATE, PUSH…), duration, and easing |
 
-| Tool | Returns |
-|------|---------|
-| `get_current_page` | Top-level frames of the current page with ids |
-| `get_all_pages` | All pages in the document |
-| `get_frame_by_name` | Frame or layer by name (case-insensitive partial match) |
-| `get_component_definitions` | Components and component sets on the current page |
-| `get_variables` | All local design tokens by collection and mode — filter with `{ type }` |
+### Plugin tools — document overview
 
-### 🔵 On-demand navigation — plugin required
+These tools return cached document structure. No selection needed, but plugin must be connected.
 
-| Tool | Returns |
-|------|---------|
-| `get_node_info` | Any node by id + children to a given `depth` |
-| `get_nodes_info` | Several nodes by id in one call |
-| `scan_nodes_by_types` | Every node matching `types` (e.g. `["TEXT","INSTANCE"]`), capped at 1000 |
+| Tool | What it does |
+|------|-------------|
+| `get_current_page` | Returns the name and top-level frames of the current page (with ids) |
+| `get_all_pages` | Returns all pages in the document with their ids and child counts |
+| `get_frame_by_name` | Finds a top-level frame by name (case-insensitive partial match) and returns its id |
+| `get_component_definitions` | Returns all components and component sets on the current page |
+| `get_variables` | Returns all local design tokens (color, spacing/FLOAT, string, boolean) grouped by collection and mode. Filter with `{ type: "COLOR" \| "FLOAT" \| "STRING" \| "BOOLEAN" }` |
 
-### 🟢 REST API — no plugin needed
+### Plugin tools — on-demand navigation
 
-Requires `FIGMA_ACCESS_TOKEN`.
+These tools fetch nodes live from Figma by id. The plugin must be open to answer the request (12 s timeout).
 
-| Tool | Returns |
-|------|---------|
-| `get_file_from_url` | Pages, frames, and metadata from any Figma URL |
-| `get_node_from_url` | A specific node from a URL that includes `?node-id=X-Y` |
+| Tool | Arguments | What it does |
+|------|-----------|-------------|
+| `get_node_info` | `id` (required), `depth` (default 2) | Fetches any node by id and returns its properties and children up to the given depth |
+| `get_nodes_info` | `ids[]` (required), `depth` (default 1) | Fetches multiple nodes by id in one call |
+| `scan_nodes_by_types` | `types[]` (required), `rootId` (optional) | Scans the current page (or a subtree) and returns every node whose type matches — e.g. `["TEXT","INSTANCE","FRAME"]`. Capped at 1 000 results |
+
+**Typical navigation flow:**
+
+```
+get_all_pages                              → get page ids
+get_current_page                           → get top-level frame ids
+get_node_info { id: "12:34", depth: 2 }    → drill into a frame
+get_node_info { id: "12:56", depth: 1 }    → drill deeper, lazily
+
+# Or search by type
+scan_nodes_by_types { types: ["INSTANCE"] }  → find all component instances
+get_node_info { id: "..." }                  → inspect one
+```
+
+### REST API tools — no plugin needed
+
+These tools call the Figma REST API directly. Require `FIGMA_ACCESS_TOKEN`.
+
+| Tool | Arguments | What it does |
+|------|-----------|-------------|
+| `get_file_from_url` | `url` (required) | Fetches a Figma file by URL and returns pages, top-level frames, and document metadata |
+| `get_node_from_url` | `url` (required), `node_id` (optional override) | Fetches a specific node from a URL that includes `?node-id=X-Y` |
 
 ---
 
-## Configuration
+## Environment variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `FIGMA_BRIDGE_PORT` | `3055` | Port for the local HTTP bridge. If you change this, also update `figma-plugin/code.ts` and rebuild the plugin — the plugin can't read env vars. |
-| `FIGMA_ACCESS_TOKEN` | — | Figma personal access token. Get it at Figma → Settings → Security → Access tokens. Required only for `get_file_from_url` and `get_node_from_url`. |
+| `FIGMA_BRIDGE_PORT` | `3055` | Port for the local HTTP bridge (plugin ↔ server). If you change this, also update `figma-plugin/code.ts` and rebuild the plugin — the plugin can't read env vars at runtime. |
+| `FIGMA_ACCESS_TOKEN` | — | Figma personal access token. Required only for `get_file_from_url` and `get_node_from_url`. |
 
 ---
 
 ## Development
 
 ```bash
-npm run build         # compile MCP server (src → dist)
-npm run build:plugin  # compile Figma plugin
-npm run build:all     # both
-npm run watch:plugin  # recompile plugin on save
-npm run dev           # run server with tsx (no build step)
-npm run lint          # eslint
-npm test              # build + node:test suite
+npm run build          # compile MCP server (src → dist)
+npm run build:plugin   # compile Figma plugin (figma-plugin/code.ts → code.js)
+npm run build:all      # both
+npm run watch:plugin   # recompile plugin on save
+npm run dev            # run server with tsx (no build step)
+npm run lint           # eslint
+npm test               # build + node:test suite
 ```
 
 ```
 src/
-  index.ts                  entry: starts MCP stdio server + local bridge
-  core/types.ts             shared types
+  index.ts                    entry: starts MCP stdio server + local bridge
+  core/types.ts               shared types
   figma-bridge/
-    ws-server.ts            HTTP bridge (push + on-demand request/response)
-    store.ts                file-based shared state + requestFromPlugin()
+    ws-server.ts              HTTP bridge (POST /update · GET /requests · POST /response)
+    store.ts                  file-based shared state + requestFromPlugin()
   figma-rest/
-    client.ts               Figma REST API client + URL parser
+    client.ts                 Figma REST API client + URL parser
     tools/
       get-file-from-url.ts
       get-node-from-url.ts
   mcp-server/
-    tool-registry.ts        registers all 15 tools
-    tools/*.ts              one file per tool
+    tool-registry.ts          registers all 15 tools
+    tools/                    one file per tool
 figma-plugin/
-  code.ts                   plugin main thread (push + poll loop)
-  ui.html                   status UI
-  manifest.json             import this into Figma
+  code.ts                     plugin main thread (push + poll loop)
+  ui.html                     status UI
+  manifest.json               import this into Figma desktop
 ```
 
 ---
 
 ## Troubleshooting
 
-**Plugin stuck on "Iniciando…" / 🔴 "Sin bridge"**  
-The MCP server isn't running. Start your AI client or run `npm start`. Verify:
+**🔴 Plugin shows "Sin bridge"**  
+The MCP server isn't running. Start your AI client (it spawns the server automatically), or run `npm start` manually. Verify the bridge is up:
 ```bash
 curl -X POST http://localhost:3055/update -H "Content-Type: application/json" -d '{}'
 # → {"ok":true}
 ```
 
 **`get_file_from_url` returns "FIGMA_ACCESS_TOKEN is not set"**  
-Add `FIGMA_ACCESS_TOKEN` to the `env` block of your MCP client config.
+Add the token to the `env` block of your MCP client config (see setup section above).
 
 **On-demand tools time out**  
-The plugin must be open in Figma. Reopen it and check for the green dot.
+The plugin must be open in Figma. Reopen it and wait for the green dot before retrying.
 
 **Changed the port and it broke**  
-Update `figma-plugin/code.ts`, run `npm run build:plugin`, re-import the plugin in Figma.
+The plugin port is compiled in. Edit `figma-plugin/code.ts`, run `npm run build:plugin`, then re-import the manifest in Figma.
+
+**Tools return "invalid result" or "Cannot read … of undefined"**  
+Stale data from a previous session. Reconnect the MCP server in your client and reload the plugin.
 
 ---
 
