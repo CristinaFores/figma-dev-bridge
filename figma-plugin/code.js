@@ -1,5 +1,5 @@
 "use strict";
-figma.showUI(__html__, { width: 240, height: 80, title: 'Design Context Bridge' });
+figma.showUI(__html__, { width: 240, height: 140, title: 'Frontend Handoff Snapshot' });
 // ── helpers ───────────────────────────────────────────────────────────────────
 function toHex(n) {
     var h = Math.round(n * 255).toString(16);
@@ -212,11 +212,17 @@ async function extractVariables() {
     });
 }
 // ── send ──────────────────────────────────────────────────────────────────────
+// Nothing is sent to the local handoff tool until the user presses "Sync" in
+// the UI. This avoids any background network activity without a visible,
+// user-initiated action — only localhost:3055 is ever contacted.
 var retryTimer = null;
 var connected = false;
 var pageContextSent = false;
+var syncEnabled = false;
 var pagesLoaded = false;
 async function sendContext() {
+    if (!syncEnabled)
+        return;
     try {
         // dynamic-page mode: other pages' children throw unless loaded first
         if (!pagesLoaded) {
@@ -264,20 +270,26 @@ async function sendContext() {
         connected = response.ok;
         if (connected)
             pageContextSent = true;
-        figma.ui.postMessage({ type: 'status', connected: connected, count: selected.length });
+        figma.ui.postMessage({ type: 'status', syncEnabled: syncEnabled, connected: connected, count: selected.length });
     }
     catch (_e) {
         connected = false;
-        figma.ui.postMessage({ type: 'status', connected: false, count: figma.currentPage.selection.length });
+        figma.ui.postMessage({ type: 'status', syncEnabled: syncEnabled, connected: false, count: figma.currentPage.selection.length });
     }
     if (retryTimer !== null)
         clearTimeout(retryTimer);
+    if (!syncEnabled)
+        return;
     retryTimer = setTimeout(function () {
         retryTimer = null;
         sendContext();
     }, connected ? 10000 : 3000);
 }
 figma.on('selectionchange', function () {
+    if (!syncEnabled) {
+        figma.ui.postMessage({ type: 'status', syncEnabled: false, connected: false, count: figma.currentPage.selection.length });
+        return;
+    }
     if (retryTimer !== null) {
         clearTimeout(retryTimer);
         retryTimer = null;
@@ -288,6 +300,8 @@ figma.on('selectionchange', function () {
 // become stale. Reset the flag so the next sendContext does a full resend.
 figma.on('currentpagechange', function () {
     pageContextSent = false;
+    if (!syncEnabled)
+        return;
     if (retryTimer !== null) {
         clearTimeout(retryTimer);
         retryTimer = null;
@@ -370,6 +384,8 @@ async function handleRequest(type, params) {
 }
 var pollTimer = null;
 async function pollRequests() {
+    if (!syncEnabled)
+        return;
     try {
         var resp = await fetch('http://localhost:3055/requests');
         if (resp.ok) {
@@ -390,10 +406,35 @@ async function pollRequests() {
             }
         }
     }
-    catch (_e) { /* bridge down, retry next tick */ }
+    catch (_e) { /* local tool not running, retry next tick */ }
     if (pollTimer !== null)
         clearTimeout(pollTimer);
+    if (!syncEnabled)
+        return;
     pollTimer = setTimeout(pollRequests, 1200);
 }
-sendContext();
-pollRequests();
+// The user controls sync from the UI: "Connect" / "Sync selection" starts
+// it, "Pause" stops it. Nothing runs automatically on plugin load.
+figma.ui.onmessage = function (msg) {
+    if (!msg || typeof msg.type !== 'string')
+        return;
+    if (msg.type === 'connect' || msg.type === 'sync') {
+        syncEnabled = true;
+        sendContext();
+        pollRequests();
+    }
+    else if (msg.type === 'pause') {
+        syncEnabled = false;
+        connected = false;
+        if (retryTimer !== null) {
+            clearTimeout(retryTimer);
+            retryTimer = null;
+        }
+        if (pollTimer !== null) {
+            clearTimeout(pollTimer);
+            pollTimer = null;
+        }
+        figma.ui.postMessage({ type: 'status', syncEnabled: false, connected: false, count: figma.currentPage.selection.length });
+    }
+};
+figma.ui.postMessage({ type: 'status', syncEnabled: syncEnabled, connected: false, count: figma.currentPage.selection.length });

@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 240, height: 80, title: 'Design Context Bridge' });
+figma.showUI(__html__, { width: 240, height: 140, title: 'Frontend Handoff Snapshot' });
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -207,14 +207,19 @@ async function extractVariables() {
 }
 
 // ── send ──────────────────────────────────────────────────────────────────────
+// Nothing is sent to the local handoff tool until the user presses "Sync" in
+// the UI. This avoids any background network activity without a visible,
+// user-initiated action — only localhost:3055 is ever contacted.
 
 var retryTimer: number | null = null;
 var connected = false;
 var pageContextSent = false;
+var syncEnabled = false;
 
 var pagesLoaded = false;
 
 async function sendContext(): Promise<void> {
+  if (!syncEnabled) return;
   try {
     // dynamic-page mode: other pages' children throw unless loaded first
     if (!pagesLoaded) {
@@ -265,13 +270,14 @@ async function sendContext(): Promise<void> {
     });
     connected = response.ok;
     if (connected) pageContextSent = true;
-    figma.ui.postMessage({ type: 'status', connected: connected, count: selected.length });
+    figma.ui.postMessage({ type: 'status', syncEnabled: syncEnabled, connected: connected, count: selected.length });
   } catch (_e) {
     connected = false;
-    figma.ui.postMessage({ type: 'status', connected: false, count: figma.currentPage.selection.length });
+    figma.ui.postMessage({ type: 'status', syncEnabled: syncEnabled, connected: false, count: figma.currentPage.selection.length });
   }
 
   if (retryTimer !== null) clearTimeout(retryTimer);
+  if (!syncEnabled) return;
   retryTimer = setTimeout(function () {
     retryTimer = null;
     sendContext();
@@ -279,6 +285,10 @@ async function sendContext(): Promise<void> {
 }
 
 figma.on('selectionchange', function () {
+  if (!syncEnabled) {
+    figma.ui.postMessage({ type: 'status', syncEnabled: false, connected: false, count: figma.currentPage.selection.length });
+    return;
+  }
   if (retryTimer !== null) { clearTimeout(retryTimer); retryTimer = null; }
   sendContext();
 });
@@ -287,6 +297,7 @@ figma.on('selectionchange', function () {
 // become stale. Reset the flag so the next sendContext does a full resend.
 figma.on('currentpagechange', function () {
   pageContextSent = false;
+  if (!syncEnabled) return;
   if (retryTimer !== null) { clearTimeout(retryTimer); retryTimer = null; }
   sendContext();
 });
@@ -363,6 +374,7 @@ async function handleRequest(type: string, params: any): Promise<any> {
 
 var pollTimer: number | null = null;
 async function pollRequests(): Promise<void> {
+  if (!syncEnabled) return;
   try {
     var resp = await fetch('http://localhost:3055/requests');
     if (resp.ok) {
@@ -378,10 +390,27 @@ async function pollRequests(): Promise<void> {
         });
       }
     }
-  } catch (_e) { /* bridge down, retry next tick */ }
+  } catch (_e) { /* local tool not running, retry next tick */ }
   if (pollTimer !== null) clearTimeout(pollTimer);
+  if (!syncEnabled) return;
   pollTimer = setTimeout(pollRequests, 1200) as unknown as number;
 }
 
-sendContext();
-pollRequests();
+// The user controls sync from the UI: "Connect" / "Sync selection" starts
+// it, "Pause" stops it. Nothing runs automatically on plugin load.
+figma.ui.onmessage = function (msg: any) {
+  if (!msg || typeof msg.type !== 'string') return;
+  if (msg.type === 'connect' || msg.type === 'sync') {
+    syncEnabled = true;
+    sendContext();
+    pollRequests();
+  } else if (msg.type === 'pause') {
+    syncEnabled = false;
+    connected = false;
+    if (retryTimer !== null) { clearTimeout(retryTimer); retryTimer = null; }
+    if (pollTimer !== null) { clearTimeout(pollTimer); pollTimer = null; }
+    figma.ui.postMessage({ type: 'status', syncEnabled: false, connected: false, count: figma.currentPage.selection.length });
+  }
+};
+
+figma.ui.postMessage({ type: 'status', syncEnabled: syncEnabled, connected: false, count: figma.currentPage.selection.length });
