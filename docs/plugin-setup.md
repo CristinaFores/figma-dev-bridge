@@ -19,14 +19,15 @@ The Figma plugin runs inside Figma desktop and pushes design context to the AI i
 
 | Status | Meaning |
 |--------|---------|
-| 🟢 Conectado al bridge | Plugin is connected — the AI can read your design |
-| 🔴 Sin bridge | The MCP server isn't running — start your AI client first |
+| ⚪ Sync paused | Nothing is being sent. Press **Sync selection** to start. |
+| 🟢 Connected to local handoff tool | Synced — the local server has your selection data |
+| 🔴 Local handoff tool not running | Sync is on, but the server on `localhost:3055` isn't reachable — start your MCP client first |
 
 ## Usage
 
-Select any frame, component, or layer in Figma. The plugin pushes context automatically — no extra steps needed.
+Select any frame, component, or layer in Figma, then press **Sync selection**. The plugin will keep pushing your selection while sync is on; press **Pause** to stop.
 
-Keep the plugin window open while you work. Selection tools cache the last pushed state, but on-demand navigation tools (`get_node_info`, etc.) require the plugin to be live and responding.
+Keep the plugin window open while syncing. On-demand navigation tools (`get_node_info`, etc.) require sync to be on and the plugin to be live and responding.
 
 ## Verify the bridge is running
 

@@ -1,7 +1,7 @@
 {
   "name": "design-context-bridge",
   "version": "1.0.1",
-  "description": "Client-agnostic MCP server that exposes live Figma design context (selection, colors, text, spacing tokens, variables, prototype interactions, and on-demand node navigation) to any AI agent that supports the Model Context Protocol.",
+  "description": "Local developer handoff tool that exports selected Figma design information such as colors, text, spacing, variables, and prototype notes for frontend implementation workflows. Also includes an optional local MCP server for AI coding tools that support the Model Context Protocol.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
