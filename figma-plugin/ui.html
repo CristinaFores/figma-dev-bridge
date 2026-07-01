@@ -29,19 +29,25 @@
   }
   button.primary { background: #18a247; border-color: #18a247; color: #fff; }
   button:disabled { opacity: 0.5; cursor: default; }
-  #note { color: #999; font-size: 10px; line-height: 1.4; }
-  #setup {
-    display: none;
-    margin-top: 8px;
+  #note { color: #999; font-size: 10px; line-height: 1.4; margin-bottom: 8px; }
+  .info-box {
     padding: 8px 10px;
-    background: #fff8e1;
-    border: 1px solid #ffe082;
     border-radius: 6px;
     font-size: 10px;
     color: #555;
     line-height: 1.5;
+    margin-top: 4px;
   }
-  #setup a { color: #0066cc; }
+  .info-box.setup-required {
+    background: #f0f4ff;
+    border: 1px solid #c7d7ff;
+  }
+  .info-box.not-running {
+    display: none;
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+  }
+  .info-box a { color: #0066cc; }
 </style>
 </head>
 <body>
@@ -57,10 +63,16 @@
 </div>
 
 <div id="note">Only sends data to localhost. Does not modify your file.</div>
-<div id="setup">
+
+<div class="info-box setup-required" id="setupRequired">
+  <strong>Requires local tool:</strong> start <em>design-context-bridge</em> on your machine before syncing.<br/>
+  <a href="https://github.com/CristinaFores/design-context-bridge" target="_blank">Setup instructions →</a>
+</div>
+
+<div class="info-box not-running" id="notRunning">
   <strong>Local tool not running.</strong><br/>
-  This plugin requires the <em>design-context-bridge</em> package running locally on port 3055.<br/>
-  Install: <a href="https://github.com/CristinaFores/design-context-bridge" target="_blank">github.com/CristinaFores/design-context-bridge</a>
+  Run <code>npx design-context-bridge</code> in your terminal, then sync again.<br/>
+  <a href="https://github.com/CristinaFores/design-context-bridge" target="_blank">Full setup →</a>
 </div>
 
 <script>
@@ -69,7 +81,8 @@
   var selectionEl = document.getElementById('selection');
   var syncBtn = document.getElementById('syncBtn');
   var pauseBtn = document.getElementById('pauseBtn');
-  var setupEl = document.getElementById('setup');
+  var setupRequired = document.getElementById('setupRequired');
+  var notRunning = document.getElementById('notRunning');
 
   syncBtn.onclick = function () {
     parent.postMessage({ pluginMessage: { type: 'sync' } }, '*');
@@ -83,11 +96,14 @@
     if (!msg || msg.type !== 'status') return;
 
     var syncEnabled = !!msg.syncEnabled;
-    var notRunning = syncEnabled && !msg.connected;
+    var isNotRunning = syncEnabled && !msg.connected;
 
     syncBtn.disabled = syncEnabled;
     pauseBtn.disabled = !syncEnabled;
-    setupEl.style.display = notRunning ? 'block' : 'none';
+
+    // show "requires local tool" only in paused state, hide when syncing
+    setupRequired.style.display = !syncEnabled ? 'block' : 'none';
+    notRunning.style.display = isNotRunning ? 'block' : 'none';
 
     if (!syncEnabled) {
       dot.className = 'dot';

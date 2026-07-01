@@ -1,5 +1,5 @@
 "use strict";
-figma.showUI(__html__, { width: 260, height: 180, title: 'Frontend Handoff Snapshot' });
+figma.showUI(__html__, { width: 260, height: 220, title: 'Frontend Handoff Snapshot' });
 // ── helpers ───────────────────────────────────────────────────────────────────
 function toHex(n) {
     var h = Math.round(n * 255).toString(16);
